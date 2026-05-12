@@ -4,9 +4,30 @@ import { signup, login, me, updateProfile } from '../controllers/authController.
 import { authenticate } from '../middleware/auth.js';
 
 const router = Router();
+const parsedAuthWindowMs = Number.parseInt(
+  process.env.AUTH_RATE_LIMIT_WINDOW_MS ?? '',
+  10
+);
+
+const parsedAuthMax = Number.parseInt(
+  process.env.AUTH_RATE_LIMIT_MAX ?? '',
+  10
+);
+
+const authWindowMs =
+  Number.isFinite(parsedAuthWindowMs) &&
+  parsedAuthWindowMs > 0
+    ? parsedAuthWindowMs
+    : 15 * 60 * 1000;
+
+const authMax =
+  Number.isFinite(parsedAuthMax) &&
+  parsedAuthMax > 0
+    ? parsedAuthMax
+    : 10;
 const authRateLimiter = rateLimit({
-  windowMs: process.env.AUTH_RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000,
-  max: process.env.AUTH_RATE_LIMIT_MAX || 10,
+  windowMs: authWindowMs,
+  max: authMax,
   message: {
     message: 'Too many authentication attempts. Please try again later.',
   },
