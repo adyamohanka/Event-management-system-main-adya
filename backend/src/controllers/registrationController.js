@@ -105,3 +105,19 @@ export const checkRegistrationStatus = async (req, res) => {
     });
   }
 };
+export const exportParticipantsCsv = async (req, res) => {
+  try {
+    const registrations = await Registration.find({
+      event: req.params.id
+    }).populate('user', 'name email');
+
+    res.status(200).json({
+      participants: registrations
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      message: err.message
+    });
+  }
+};
