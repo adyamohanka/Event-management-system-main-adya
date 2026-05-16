@@ -1,11 +1,14 @@
+process.env.JWT_SECRET = 'testsecret';
+
+import { jest } from '@jest/globals';
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+
+jest.setTimeout(30000);
 
 let mongoServer;
 
 beforeAll(async () => {
-  process.env.JWT_SECRET = 'testsecret';
-
   mongoServer = await MongoMemoryServer.create();
 
   const uri = mongoServer.getUri();
