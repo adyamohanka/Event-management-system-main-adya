@@ -1,10 +1,26 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ChevronRight, Github, Lock, Search } from 'lucide-react';
 import { Button } from '../ui/button.jsx';
 import { Link } from 'react-router-dom';
 
 export default function GradientHero() {
+  const placeholders = [
+    "Search for events...",
+    "Search for communities...",
+    "Search for organizers..."
+  ];
+  
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderIndex((prev) => (prev + 1) % placeholders.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="bg-background relative w-full overflow-hidden">
       {/* Dynamic Background */}
@@ -17,26 +33,9 @@ export default function GradientHero() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8882_1px,transparent_1px),linear-gradient(to_bottom,#8882_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <div className="relative z-10 container mx-auto px-4 pt-36 pb-24 sm:px-6 lg:px-8 lg:pt-48 lg:pb-32">
         <div className="mx-auto max-w-5xl">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="mx-auto mb-8 flex justify-center"
-          >
-            <div className="group relative inline-flex items-center gap-2 rounded-full border border-border/50 bg-background/50 px-4 py-1.5 text-sm font-medium shadow-sm backdrop-blur-md transition-all hover:border-indigo-500/30 hover:bg-background/80">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-indigo-500"></span>
-              </span>
-              <span className="text-muted-foreground bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                Powering communities to host events seamlessly
-              </span>
-              <ChevronRight className="text-muted-foreground ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </div>
-          </motion.div>
+
 
           {/* Heading */}
           <motion.h1
@@ -65,18 +64,37 @@ export default function GradientHero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="mx-auto mt-12 max-w-2xl relative z-20"
+            className="mx-auto mt-8 max-w-2xl relative z-20"
           >
             <form
               className="relative flex items-center w-full h-16 rounded-full border border-border/50 bg-background/80 pl-6 pr-2 shadow-2xl backdrop-blur-xl focus-within:border-indigo-500/50 focus-within:bg-background transition-all hover:border-border"
               onSubmit={(e) => { e.preventDefault(); /* Handle search */ }}
             >
               <Search className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-              <input
-                type="text"
-                placeholder="Search for events, communities, or organizers..."
-                className="w-full bg-transparent px-4 text-base text-foreground placeholder:text-muted-foreground focus:outline-none"
-              />
+              <div className="relative w-full h-full flex items-center overflow-hidden">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  className="w-full h-full bg-transparent px-4 text-base text-foreground focus:outline-none relative z-10"
+                />
+                {!inputValue && (
+                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={placeholderIndex}
+                        initial={{ y: 15, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: -15, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="text-muted-foreground text-base"
+                      >
+                        {placeholders[placeholderIndex]}
+                      </motion.span>
+                    </AnimatePresence>
+                  </div>
+                )}
+              </div>
               <Button
                 type="submit"
                 className="h-12 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white shadow-lg hover:shadow-indigo-500/25 px-8 font-medium transition-all hover:scale-105 active:scale-95"

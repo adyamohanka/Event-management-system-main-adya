@@ -214,7 +214,7 @@ export default function Header2() {
               ) : (
                 <Link
                   to="/login"
-                  className="flex items-center justify-center h-10 w-10 rounded-full bg-muted/30 text-foreground/80 hover:bg-muted/50 hover:text-foreground transition-all duration-200"
+                  className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-100 text-gray-900 hover:bg-gray-200 transition-all duration-200 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
                   aria-label="Sign In"
                 >
                   <User className="h-5 w-5" />
