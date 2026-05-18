@@ -10,8 +10,21 @@ import {
 
 const router = Router();
 
-router.post('/signup', authRateLimiter, signup);
-router.post('/login', authRateLimiter, login);
+router.post(
+  '/signup',
+  authRateLimiter,
+  signupValidation,
+  validate,
+  signup
+);
+
+router.post(
+  '/login',
+  authRateLimiter,
+  loginValidation,
+  validate,
+  login
+);
 
 router.get('/me', authenticate, me);
 router.put('/profile', authenticate, updateProfile);
