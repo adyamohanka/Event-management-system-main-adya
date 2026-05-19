@@ -1,9 +1,13 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, MapPin, Ticket, X, Download, Search } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { useAuth } from '../../context/AuthContext';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import {
+  Link,
+  useNavigate,
+  useSearchParams
+} from 'react-router-dom';
 import { API_BASE_URL } from '../../config';
 import ConfirmationModal from "../../components/ui/confirmation-modal";
 import { useDebounce } from '../../hooks/useDebounce';
@@ -114,7 +118,6 @@ const fetchAvailableEvents = async () => {
         setLoading(false);
     }
 };
-
 const fetchRegistrations = async () => {
     try {
         setLoading(true);
@@ -319,7 +322,6 @@ return (
                     ))}
                 </div>
             </div>
-
             {/* Main Content Area */}
             <div className="bg-card/50 backdrop-blur-sm rounded-3xl p-6 md:p-8 min-h-[500px] border border-border shadow-sm">
                 {/* Content Header */}

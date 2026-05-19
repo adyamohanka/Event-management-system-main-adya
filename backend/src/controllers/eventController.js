@@ -180,7 +180,6 @@ export const listEvents = async (req, res) => {
         totalPages: Math.ceil(total / limitNum),
       },
     });
-
   } catch (err) {
     res.status(500).json({
       message: err.message,
